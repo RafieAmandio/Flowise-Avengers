@@ -31,4 +31,4 @@ RUN pnpm build
 
 EXPOSE 3000
 
-CMD ["npx", "flowise", "start", "--FLOWISE_USERNAME=avengers", "--FLOWISE_PASSWORD=SoyaBotol69"]
+CMD ["npx", "flowise", "start", "--FLOWISE_USERNAME=avengers", "--FLOWISE_PASSWORD=SoyaBotol69", "--CORS_ORIGINS=*", "--IFRAME_ORIGINS=*"]
