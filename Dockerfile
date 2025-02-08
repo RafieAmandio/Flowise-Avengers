@@ -1,18 +1,18 @@
 # Build local monorepo image
-# docker build --no-cache -t  flowise .
+# docker build --no-cache -t flowise .
 
 # Run image
 # docker run -d -p 3000:3000 flowise
 
 FROM node:20-alpine
-RUN apk add --update libc6-compat python3 make g++
-# needed for pdfjs-dist
-RUN apk add --no-cache build-base cairo-dev pango-dev
 
+RUN apk add --update libc6-compat python3 make g++
+# Needed for pdfjs-dist
+RUN apk add --no-cache build-base cairo-dev pango-dev
 # Install Chromium
 RUN apk add --no-cache chromium
 
-#install PNPM globaly
+# Install PNPM globally
 RUN npm install -g pnpm
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
@@ -26,9 +26,20 @@ WORKDIR /usr/src
 COPY . .
 
 RUN pnpm install
-
 RUN pnpm build
 
 EXPOSE 3000
 
-CMD ["npx", "flowise", "start", "--FLOWISE_USERNAME=avengers", "--FLOWISE_PASSWORD=SoyaBotol69", "--CORS_ORIGINS=*", "--IFRAME_ORIGINS=*"]
+CMD ["npx", "flowise", "start", \
+    "--FLOWISE_USERNAME=avengers", \
+    "--FLOWISE_PASSWORD=SoyaBotol69", \
+    "--CORS_ORIGINS=*", \
+    "--IFRAME_ORIGINS=*", \
+    "--DATABASE_TYPE=postgres", \
+    "--DATABASE_HOST=admin.soluvion.com", \
+    "--DATABASE_PORT=5432", \
+    "--DATABASE_USER=flowise", \
+    "--DATABASE_PASSWORD=flowise", \
+    "--DATABASE_NAME=flowise", \
+    "--DATABASE_SSL=false", \
+    "--DATABASE_SSL_KEY_BASE64=false"]
